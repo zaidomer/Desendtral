@@ -1,6 +1,6 @@
 <div align="center">
 
-![alt text](https://raw.githubusercontent.com/zaidomer/Desendtral/main/frontend/desendtral/assets/images/desendtral_logo_clear.png?token=GHSAT0AAAAAACSFNCWKVIZJ35PCJUQ7YVRGZSYDKBA)
+![alt text](https://raw.githubusercontent.com/zaidomer/Desendtral/main/Desendtral_logo.png)
 
 # Desendtral
 A decentralized messaging platform.
