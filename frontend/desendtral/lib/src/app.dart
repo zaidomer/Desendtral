@@ -1,8 +1,9 @@
+import 'package:desendtral/src/contacts_feature/contact_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'contacts_feature/contact_item_expanded.dart';
+import 'messages_feature/message_view.dart';
 import 'contacts_feature/contact_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
@@ -69,8 +70,8 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case ContactItemExpanded.routeName:
-                    return const ContactItemExpanded();
+                  case MessageView.routeName:
+                    return MessageView();
                   // case ContactItemListView.routeName:
                   default:
                     return const ContactItemListView();

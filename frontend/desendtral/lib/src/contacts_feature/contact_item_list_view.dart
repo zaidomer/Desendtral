@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
 import 'contact_item.dart';
-import 'contact_item_expanded.dart';
+import '../messages_feature/message_view.dart';
 
 /// Displays a list of ContactItems.
 class ContactItemListView extends StatefulWidget {
@@ -38,18 +38,25 @@ class _ContactItemListViewState extends State<ContactItemListView> {
     super.dispose();
   }
 
-  void addContact(String name, String port, String email) {
+  void addContact(String name, String port, String email, int? index) {
     setState(() {
-      int newId = contactsList.isNotEmpty ? contactsList.last.id + 1 : 0;
-      contactsList.add(ContactItem(newId, name, port, email));
+      if(index==null){
+        int newId = contactsList.isNotEmpty ? contactsList.last.id + 1 : 0;
+        contactsList.add(ContactItem(newId, name, port, email));
+      }else{
+        contactsList[index].name=name;
+        contactsList[index].port=port;
+        contactsList[index].e=email;
+      }
     });
     
   }
 
-  void openNewContactDialog() => showDialog(
+  void openNewContactDialog(int? index) => showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) => AlertDialog(
-      title: const Text("Add Contact"),
+      title: index==null ? const Text("Add Contact") : const Text("Edit Contact"),
       content: SingleChildScrollView(
         child: ListBody(
           children:[
@@ -80,13 +87,13 @@ class _ContactItemListViewState extends State<ContactItemListView> {
         ),
         
         TextButton(
-          child: const Text("Add"),
+          child: index==null ? const Text("Add") : const Text("Save"),
           onPressed: () {
             // Navigator.of(context).pop(nameController.text);
             // Navigator.of(context).pop(portController.text);
             // Navigator.of(context).pop(emailController.text);
             Navigator.of(context).pop();
-            addContact(nameController.text, portController.text, emailController.text);
+            addContact(nameController.text, portController.text, emailController.text, index);
 
             nameController.clear();
             portController.clear();
@@ -132,14 +139,14 @@ class _ContactItemListViewState extends State<ContactItemListView> {
       // builds Widgets as they’re scrolled into view.
       body: Column(children:[
         const SizedBox(height: 8), 
-        Expanded(child:ListView.builder(
+        Flexible(child:ListView.builder(
           // Providing a restorationId allows the ListView to restore the
           // scroll position when a user leaves and returns to the app after it
           // has been killed while running in the background.
           restorationId: 'ContactItemListView',
           itemCount: contactsList.length,
           itemBuilder: (BuildContext context, int index) {
-            final item = contactsList[index];
+            ContactItem item = contactsList[index];
 
             return ListTile(
               title: Text(item.name),
@@ -151,28 +158,42 @@ class _ContactItemListViewState extends State<ContactItemListView> {
                 // Navigate to the details page. If the user leaves and returns to
                 // the app after it has been killed while running in the
                 // background, the navigation stack is restored.
-                Navigator.restorablePushNamed(
+                Navigator.pushNamed(
                   context,
-                  ContactItemExpanded.routeName,
+                  MessageView.routeName,
+                  arguments: item
                 );
               },
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
+              trailing: Wrap(spacing:10,children:[IconButton(
+                icon: const Icon(Icons.edit),
                 onPressed: () {
-                  setState(() {
+                  // setState(() {
                     // int newId = contactsList.isNotEmpty ? contactsList.last.id + 1 : 0;
-                    contactsList.removeAt(index);
-                  });
-                },
-              ),
+                    // contactsList.removeAt(index);
+                  // });
+                  nameController.text = item.name;
+                  portController.text = item.port;
+                  emailController.text = item.e;
+                  openNewContactDialog(index);
+                },),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    setState(() {
+                      // int newId = contactsList.isNotEmpty ? contactsList.last.id + 1 : 0;
+                      contactsList.removeAt(index);
+                    });
+                  })
+                ]),
             );
           },
       ))]),
 
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add', // used by assistive technologies
+        // backgroundColor: Colors.blue[700],
         onPressed: () {
-          openNewContactDialog();
+          openNewContactDialog(null);
         },
         child: const Icon(Icons.add),
       ),
