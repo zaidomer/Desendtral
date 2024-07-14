@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case MessageView.routeName:
-                    return MessageView();
+                    return const MessageView();
                   // case ContactItemListView.routeName:
                   default:
                     return const ContactItemListView();

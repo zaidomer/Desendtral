@@ -4,7 +4,7 @@ import '../contacts_feature/contact_item.dart';
 import './message_item.dart';
 
 class MessageView extends StatefulWidget {
-  MessageView({super.key});
+  const MessageView({super.key});
 
   static const routeName = '/Contact_item';
 
@@ -53,7 +53,7 @@ class _MessageViewState extends State<MessageView> {
             itemCount: messages.length,
             itemBuilder: (BuildContext context, int index) {
               MessageItem item = messages[index];
-              return MessageBubble(message: item);
+              return MessageBubble(message: item, isSent: true,);
             }
         )),
         Flexible(flex:1, child: 

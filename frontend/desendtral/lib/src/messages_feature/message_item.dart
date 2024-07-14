@@ -1,5 +1,5 @@
 class MessageItem {
-  MessageItem(this.id, this.text);
-  int id;
-  String text;
+  const MessageItem(this.id, this.text);
+  final int id;
+  final String text;
 }
